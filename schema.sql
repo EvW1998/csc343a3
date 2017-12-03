@@ -8,7 +8,7 @@ CREATE TABLE student(
 
   first_name VARCHAR(20) NOT NULL,
   
-  last_name VARCHAR(20) NOT NULL,
+  last_name VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE teachers(
@@ -16,7 +16,7 @@ CREATE TABLE teachers(
 
   title VARCHAR(20) NOT NULL,
   
-  last_name VARCHAR(20) NOT NULL,
+  last_name VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE classes(
@@ -24,7 +24,7 @@ CREATE TABLE classes(
 
   room VARCHAR(20) NOT NULL,
   
-  grade VARCHAR(20) NOT NULL,
+  grade VARCHAR(20) NOT NULL
   
   tid INT NOT NULL,
 );
@@ -32,5 +32,5 @@ CREATE TABLE classes(
 CREATE TABLE attending(
   sid INT NOT NULL,
   
-  cid INT NOT NULL,
+  cid INT NOT NULL
 );
