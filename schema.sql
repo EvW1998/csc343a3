@@ -24,7 +24,7 @@ CREATE TABLE classes(
 
   room VARCHAR(20) NOT NULL,
   
-  grade VARCHAR(20) NOT NULL
+  grade VARCHAR(20) NOT NULL,
   
   tid INT NOT NULL
 );
