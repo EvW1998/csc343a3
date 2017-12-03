@@ -26,7 +26,7 @@ CREATE TABLE classes(
   
   grade VARCHAR(20) NOT NULL
   
-  tid INT NOT NULL,
+  tid INT NOT NULL
 );
 
 CREATE TABLE attending(
