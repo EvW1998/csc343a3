@@ -36,8 +36,16 @@ CREATE TABLE rooms(
   
   class2 INT
   
-  CHECK(class2 IS NULL OR ((SELECT teacher_id FROM classes WHERE class_id = class1) = (SELECT teacher_id FROM classes WHERE class_id = class2)))
+  CHECK(class2 IS NULL OR is_same_teacher(class1, class2))
 );
+
+CREATE OR REPLACE FUNCTION is_same_teacher(class1 integer, class2 integer)
+  RETURNS boolean AS
+$func$
+BEGIN
+   RETURN (SELECT teacher_id FROM classes WHERE class_id = class1) = (SELECT teacher_id FROM classes WHERE class_id = class2);
+END
+$func$ LANGUAGE plpgsql STABLE STRICT;
 
 CREATE TABLE attending(
   student_id INT NOT NULL,
