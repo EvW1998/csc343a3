@@ -3,16 +3,18 @@ CREATE SCHEMA quizschema;
 
 SET search_path TO quizschema;
 
-CREATE TABLE student(
-  sid INT primary key NOT NULL,
+CREATE TABLE students(
+  student_id INT primary key NOT NULL,
 
   first_name VARCHAR(20) NOT NULL,
   
-  last_name VARCHAR(20) NOT NULL
+  last_name VARCHAR(20) NOT NULL,
+  
+  CHECK(student_id SIMILAR TO '[0-9]{10}')
 );
 
 CREATE TABLE teachers(
-  tid INT primary key NOT NULL,
+  teacher_id INT primary key NOT NULL,
 
   title VARCHAR(20) NOT NULL,
   
@@ -20,17 +22,25 @@ CREATE TABLE teachers(
 );
 
 CREATE TABLE classes(
-  cid INT primary key NOT NULL,
-
-  room VARCHAR(20) NOT NULL,
+  class_id INT primary key NOT NULL,
   
   grade VARCHAR(20) NOT NULL,
   
-  tid INT NOT NULL
+  teacher_id INT NOT NULL
+);
+
+CREATE TABLE rooms(
+  room_id INT primary key NOT NULL,
+  
+  class1 INT NOT NULL,
+  
+  class2 INT
+  
+  CHECK(class2 IS NULL OR ((SELECT teacher_id FROM classes WHERE class_id = class1) = (SELECT teacher_id FROM classes WHERE class_id = class2)))
 );
 
 CREATE TABLE attending(
-  sid INT NOT NULL,
+  student_id INT NOT NULL,
   
-  cid INT NOT NULL
+  class_id INT NOT NULL
 );
