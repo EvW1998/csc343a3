@@ -3,6 +3,9 @@ CREATE SCHEMA quizschema;
 
 SET search_path TO quizschema;
 
+CREATE TYPE q_type AS ENUM(
+	'true-false', 'multiple choice', 'numeric');
+
 CREATE TABLE students(
   student_id CHAR(10) primary key NOT NULL,
 
@@ -51,4 +54,10 @@ CREATE TABLE attending(
   student_id INT NOT NULL,
   
   class_id INT NOT NULL
+);
+
+CREATE TABLE questions(
+  question_id INT PRIMARY KEY NOT NULL,
+  
+  question_type q_type NOT NULL
 );
