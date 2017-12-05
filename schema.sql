@@ -4,13 +4,13 @@ CREATE SCHEMA quizschema;
 SET search_path TO quizschema;
 
 CREATE TABLE students(
-  student_id INT primary key NOT NULL,
+  student_id CHAR(10) primary key NOT NULL,
 
   first_name VARCHAR(20) NOT NULL,
   
   last_name VARCHAR(20) NOT NULL,
   
-  CHECK(student_id SIMILAR TO '[0-9]{10}')
+  CONSTRAINT id_wrong CHECK (student_id SIMILAR TO '[[:digit:]]{10}')
 );
 
 CREATE TABLE teachers(
