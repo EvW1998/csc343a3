@@ -9,7 +9,7 @@ DECLARE
 	rec RECORD;
 
 BEGIN
-	FOR rec IN SELECT lower_range FROM numeric_question_hints WHERE id = q_id
+	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
 	LOOP
 		RAISE NOTICE '%', rec.upper_range;
 	END LOOP;
