@@ -1,6 +1,7 @@
 /* 
     What constraints from the domain could not be enforced?
         - The restriction that each class must have at least 1 student couldn't be enforced.
+			This can't enforce by foreign key
     
     What constraints that could have been enforced were not enforced? Why not?
 */
@@ -9,6 +10,9 @@ DROP SCHEMA IF EXISTS quizschema CASCADE;
 CREATE SCHEMA quizschema;
 SET SEARCH_PATH TO quizschema;
 
+
+
+-- TYPES --
 
 /*
     Create an enum to hold question types as there are only 3 types
@@ -19,6 +23,9 @@ CREATE TYPE question_types AS ENUM(
     'Numeric'
 );
 
+
+
+-- FUNCTIONS --
 
 /*
     Create an function check whether the student is in the class.
@@ -46,7 +53,7 @@ DECLARE
 BEGIN
 	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
 	LOOP
-		IF NOT (upper_bound < rec.lower_range OR lower_bound >= rec.upper_range) THEN
+		IF NOT (upper_bound <= rec.lower_range OR lower_bound >= rec.upper_range) THEN
 			RETURN false;
 		END IF;
 	END LOOP;
@@ -134,10 +141,7 @@ $func$ LANGUAGE plpgsql STABLE STRICT;
 
 
 
-
-
-
-
+-- TABLES --
 
 /* 
     Students should be used in a classes table that represent the classes a student is in.
@@ -277,8 +281,8 @@ CREATE TABLE quiz(
     id VARCHAR(50) PRIMARY KEY,
 	-- Title of this quiz
     title VARCHAR(100) NOT NULL,
-	-- The due date of the quiz
-    due DATE NOT NULL,
+	-- The due date and time of the quiz
+    due TIMESTAMP NOT NULL,
 	-- Whether show the hint
     show_hint BOOLEAN NOT NULL,
 	-- The class which the quiz assigned to
@@ -331,7 +335,9 @@ CREATE TABLE quiz_question(
 	
     PRIMARY KEY(quiz_id, question_id),
 	
+	-- MAKE sure the weight is greater than 0
 	CONSTRAINT non_positive_weight CHECK(weight > 0),
+	-- Make sure the number of choices of a mulitple choice question is greater than 1
 	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id))
 );
 
