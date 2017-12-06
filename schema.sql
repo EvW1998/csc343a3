@@ -22,7 +22,7 @@ CREATE TYPE question_types AS ENUM(
 
 
 /*
-    Create an function check whether the student id is all digit.
+    Create an function check whether the student is in the class.
 	Return true if it is, false if it isn't
 */
 CREATE OR REPLACE FUNCTION is_in_class(student_id CHAR(10), quiz_id VARCHAR(50))
@@ -36,7 +36,7 @@ $func$ LANGUAGE plpgsql STABLE STRICT;
 
 /*
     Create an function check when we create hint for numeric question, whether the range of the hint will overlap.
-	Return true if it is not, false if it is
+	Return true if it is not, false if it isn't
 */
 CREATE OR REPLACE FUNCTION is_not_overlap(lower_bound integer, upper_bound integer, q_id integer)
 	RETURNS boolean AS
@@ -257,5 +257,5 @@ CREATE TABLE quiz_response(
 	-- Make sure not record the same thing twice
     UNIQUE(student_id, quiz_id, question_id,
 	-- Make sure this student is in the class which this quiz assigned to
-	CONSTRAINT range_overlap CHECK(is_in_class(student_id, quiz_id))
+	CHECK(is_in_class(student_id, quiz_id))
 );
