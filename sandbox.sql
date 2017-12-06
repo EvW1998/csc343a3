@@ -2,7 +2,7 @@ DROP SCHEMA IF EXISTS quizschema CASCADE;
 CREATE SCHEMA quizschema;
 SET SEARCH_PATH TO quizschema;
 
-CREATE OR REPLACE FUNCTION is_not_overlap(upper_bound integer, lower_bound integer, q_id integer)
+CREATE OR REPLACE FUNCTION is_not_overlap(lower_bound integer, upper_bound integer, q_id integer)
 	RETURNS integer AS
 $func$
 DECLARE
@@ -12,8 +12,8 @@ BEGIN
 	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
 	LOOP
 		RAISE NOTICE '%', rec.upper_range;
-		IF upper_range = 1 THEN
-			RETURN upper_range;
+		IF rec.upper_range = 1 THEN
+			RETURN rec.upper_range;
 		END IF;
 	END LOOP;
 END;
