@@ -1,7 +1,6 @@
 /* 
     What constraints from the domain could not be enforced?
         - The restriction that each class must have at least 1 student couldn't be enforced.
-        - The constraint that each student can only answer questions that they were assigned to was not enforced.
     
     What constraints that could have been enforced were not enforced? Why not?
 */
@@ -61,15 +60,15 @@ $func$ LANGUAGE plpgsql STABLE STRICT;
     Create an function check whether the question_answer is the right type of this question
 	Return true if it is, false if it isn't
 */
-CREATE OR REPLACE FUNCTION is_right_answer_type(q_answer VARCHAR(1000), q_type question_types)
+CREATE OR REPLACE FUNCTION is_right_answer_type(q_answer VARCHAR(1000), q_id integer)
 	RETURNS boolean AS
 $func$
 BEGIN
-	IF q_type = 'True False' THEN
+	IF (SELECT question_type FROM question WHERE id = q_id) = 'True False' THEN
 		IF NOT (q_answer = 'TRUE' OR q_answer = 'FALSE') THEN
 			RETURN false;
 		END IF;
-	ELSIF q_type = 'Numeric' THEN
+	ELSIF (SELECT question_type FROM question WHERE id = q_id) = 'Numeric' THEN
 		IF NOT (q_answer SIMILAR TO '[[:digit:]]*') THEN
 			RETURN false;
 		END IF;
@@ -192,7 +191,7 @@ CREATE TABLE question(
 	-- The type of this question
     question_type question_types NOT NULL,
 	-- Make sure question_answer has the right type
-	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type(question_answer, question_type))
+	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type(question_answer, id))
 );
 
 
@@ -335,5 +334,7 @@ CREATE TABLE quiz_response(
 	-- Make sure not record the same thing twice
     CONSTRAINT uniqu UNIQUE(student_id, quiz_id, question_id),
 	-- Make sure this student is in the class which this quiz assigned to
-	CONSTRAINT not_in_class CHECK(is_in_class(student_id, quiz_id))
+	CONSTRAINT not_in_class CHECK(is_in_class(student_id, quiz_id)),
+	-- Make sure answer has the right type
+	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type(answer, question_id))
 );
