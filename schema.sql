@@ -84,7 +84,7 @@ $func$ LANGUAGE plpgsql STABLE STRICT;
     Create an function check whether the question_answer is the right type of this question
 	Return true if it is, false if it isn't
 */
-CREATE OR REPLACE FUNCTION is_right_answer_type_by_type(q_answer VARCHAR(1000), q_id integer, q_type question_types)
+CREATE OR REPLACE FUNCTION is_right_answer_type_by_type(q_answer VARCHAR(1000), q_type question_types)
 	RETURNS boolean AS
 $func$
 BEGIN
