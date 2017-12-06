@@ -386,7 +386,7 @@ CREATE TABLE quiz_response(
 	-- Make sure this student is in the class which this quiz assigned to
 	CONSTRAINT not_in_class CHECK(is_in_class(student_id, quiz_id)),
 	-- Make sure answer has the right type
-	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type_by_id(answer, question_id))
+	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type_by_id(answer, question_id)),
 		-- MAKE sure the mulitple choice question's respons is in the choices
 	CONSTRAINT respons_not_in_choices CHECK(respons_in_choices(answer, question_id))
 );
