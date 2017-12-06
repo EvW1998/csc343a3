@@ -1,0 +1,155 @@
+dbsrv1:~/CSC343/csc343a3$ psql csc343h-wangz304
+psql (9.5.10)
+Type "help" for help.
+
+csc343h-wangz304=> \i runner.txt
+-- Loading schema and data:
+psql:schema.sql:9: NOTICE:  schema "quizschema" does not exist, skipping
+DROP SCHEMA
+CREATE SCHEMA
+SET
+CREATE TYPE
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 5
+INSERT 0 5
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+-- Query 1:
+    full_name    |     id
+-----------------+------------
+ Lena Headey     | 0998801234
+ Peter Dinklage  | 0010784522
+ Emilia Clarke   | 0997733991
+ Kit Harrington  | 5555555555
+ Sophie Turner   | 1111111111
+ Maisie Williams | 2222222222
+(6 rows)
+
+-- Query 2:
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+psql:q2.sql:24: WARNING:  column "hints" has type "unknown"
+DETAIL:  Proceeding with relation creation anyway.
+CREATE VIEW
+ id  |                                                                   question_text                                                                    | hints
+-----+----------------------------------------------------------------------------------------------------------------------------------------------------+-------
+ 790 | During the War of 1812 the Americans burned down the Parliament Buildings in York (now Toronto). What did the British and Canadians do in return?  |     0
+ 601 | During the "Quiet Revolution," Quebec experienced rapid change. In what decade did this occur? (Enter the year that began the decade, e.g., 1840.) |     3
+ 625 | What is the Underground Railroad?                                                                                                                  |     3
+ 566 | The Prime Minister, Justin Trudeau, is Canada's Head of State.                                                                                     |
+ 782 | What do you promise when you take the oath of citizenship?                                                                                         |     1
+(5 rows)
+
+-- Query 3:
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+ student_id | last_name  | total_grade
+------------+------------+-------------
+ 0998801234 | Headey     |           3
+ 0010784522 | Dinklage   |           8
+ 0997733991 | Clarke     |           5
+ 5555555555 | Harrington |           1
+ 1111111111 | Turner     |           0
+(5 rows)
+
+-- Query 4:
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+ student_id | question_id |                                                                   question_text
+------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------
+ 5555555555 |         625 | What is the Underground Railroad?
+ 1111111111 |         625 | What is the Underground Railroad?
+ 1111111111 |         601 | During the "Quiet Revolution," Quebec experienced rapid change. In what decade did this occur? (Enter the year that began the decade, e.g., 1840.)
+ 1111111111 |         790 | During the War of 1812 the Americans burned down the Parliament Buildings in York (now Toronto). What did the British and Canadians do in return?
+ 1111111111 |         566 | The Prime Minister, Justin Trudeau, is Canada's Head of State.
+ 5555555555 |         601 | During the "Quiet Revolution," Quebec experienced rapid change. In what decade did this occur? (Enter the year that began the decade, e.g., 1840.)
+(6 rows)
+
+-- Query 5:
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+ question_id | right_respons | wrong_respons | no_respons
+-------------+---------------+---------------+------------
+         566 |             3 |             1 |          1
+         601 |             2 |             1 |          2
+         625 |             2 |             1 |          2
+         790 |             2 |             2 |          1
+(4 rows)
+
+csc343h-wangz304=> \q
+dbsrv1:~/CSC343/csc343a3$
