@@ -36,4 +36,4 @@ CREATE VIEW right_answer AS
         AND want_responses.answer = right_answers.question_answer
 		GROUP BY want_responses.question_id;
 
-SELECT question_id, right_respons, wrong_respons, no_respons FROM no_answer NATIONAL JOIN wrong_answer NATIONAL JOIN right_answer;
+SELECT question_id, right_respons, wrong_respons, no_respons FROM (no_answer NATURAL JOIN wrong_answer) NATURAL JOIN right_answer;
