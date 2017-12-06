@@ -21,12 +21,39 @@ CREATE TYPE question_types AS ENUM(
 );
 
 
+/*
+    Create an function check whether the student id is all digit.
+	Return true if it is, false if it isn't
+*/
 CREATE OR REPLACE FUNCTION is_in_class(student_id CHAR(10), quiz_id VARCHAR(50))
 	RETURNS boolean AS
 $func$
 BEGIN
 	RETURN student_id IN (SELECT student_id FROM student_class WHERE class_id = (SELECT id FROM quiz WHERE quiz.class = quiz_id));
 END
+$func$ LANGUAGE plpgsql STABLE STRICT;
+
+
+/*
+    Create an function check when we create hint for numeric question, whether the range of the hint will overlap.
+	Return true if it is not, false if it is
+*/
+CREATE OR REPLACE FUNCTION is_not_overlap(lower_bound integer, upper_bound integer, q_id integer)
+	RETURNS boolean AS
+$func$
+DECLARE
+	rec RECORD;
+
+BEGIN
+	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
+	LOOP
+		IF NOT (upper_bound < rec.lower_range OR lower_bound >= rec.upper_range) THEN
+			RETURN false;
+		END IF;
+	END LOOP;
+	
+	RETURN true;
+END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
 
 
@@ -125,7 +152,7 @@ CREATE TABLE multiple_choice_options(
 
 /*
     Holds extra information for numeric questions
-	* have to make sure no two hint range overlap!
+	have to make sure no two hint range overlap!
 */
 CREATE TABLE numeric_question_hints(
 	-- ID of the question that the answer related to
@@ -139,6 +166,8 @@ CREATE TABLE numeric_question_hints(
 	
 	-- Make sure no two hints have same range in one question
     UNIQUE(id, lower_range, upper_range)
+	-- have to make sure no two hint range overlap!
+	CHECK(is_not_overlap(lower_range, upper_range, id))
 );
 
 
@@ -228,5 +257,5 @@ CREATE TABLE quiz_response(
 	-- Make sure not record the same thing twice
     UNIQUE(student_id, quiz_id, question_id,
 	-- Make sure this student is in the class which this quiz assigned to
-	CHECK(is_in_class(student_id, quiz_id))
+	CONSTRAINT range_overlap CHECK(is_in_class(student_id, quiz_id))
 );
