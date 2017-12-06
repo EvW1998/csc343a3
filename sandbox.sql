@@ -3,7 +3,7 @@ CREATE SCHEMA quizschema;
 SET SEARCH_PATH TO quizschema;
 
 CREATE OR REPLACE FUNCTION is_not_overlap(upper_bound integer, lower_bound integer, q_id integer)
-	RETURNS void AS
+	RETURNS integer AS
 $func$
 DECLARE
 	rec RECORD;
@@ -12,6 +12,9 @@ BEGIN
 	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
 	LOOP
 		RAISE NOTICE '%', rec.upper_range;
+		IF upper_range = 1 THEN
+			RETURN upper_range;
+		END IF;
 	END LOOP;
 END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
