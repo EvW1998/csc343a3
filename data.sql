@@ -35,8 +35,8 @@ INSERT INTO question VALUES(
     'To pledge your loyalty to the Sovereign, Queen Elizabeth II',
     'Multiple Choice'
 );
-INSERT INTO multiple_choice_options VALUES(782, 'To pledge your allegiance to the flag and fulfill the duties of a Canadian', 'Think regally.');
-INSERT INTO multiple_choice_options VALUES(782, 'To pledge your loyalty to Canada from sea to sea', NULL);
+INSERT INTO extra_multiple_choice_options VALUES(782, 'To pledge your allegiance to the flag and fulfill the duties of a Canadian', 'Think regally.');
+INSERT INTO extra_multiple_choice_options VALUES(782, 'To pledge your loyalty to Canada from sea to sea', NULL);
 
 INSERT INTO question VALUES(
     566, 
@@ -63,17 +63,17 @@ INSERT INTO question VALUES(
     'Multiple Choice'
 );
 
-INSERT INTO multiple_choice_options VALUES(
+INSERT INTO extra_multiple_choice_options VALUES(
     625,
     'The first railway to cross Canada',
     'The Underground Railroad was generally south to north, not east-west.'
 );
-INSERT INTO multiple_choice_options VALUES(
+INSERT INTO extra_multiple_choice_options VALUES(
     625,
     'The CPR''s secret railway line',
     'The Underground Railroad was secret, but it had nothing to do with trains.'
 );
-INSERT INTO multiple_choice_options VALUES(
+INSERT INTO extra_multiple_choice_options VALUES(
     625,
     'The TTC subway system',
     'The TTC is relatively recent; the Underground Railroad was in operation over 100 years ago.'
@@ -86,9 +86,9 @@ INSERT INTO question VALUES(
     'Multiple Choice'
 );
 
-INSERT INTO multiple_choice_options VALUES(790, 'They attacked American merchant ships', NULL);
-INSERT INTO multiple_choice_options VALUES(790, 'They expanded their defence system, including Fort York', NULL);
-INSERT INTO multiple_choice_options VALUES(790, 'They captured Niagara Falls', NULL);
+INSERT INTO extra_multiple_choice_options VALUES(790, 'They attacked American merchant ships', NULL);
+INSERT INTO extra_multiple_choice_options VALUES(790, 'They expanded their defence system, including Fort York', NULL);
+INSERT INTO extra_multiple_choice_options VALUES(790, 'They captured Niagara Falls', NULL);
 
 -- QUIZ --
 INSERT INTO quiz VALUES('Pr1-220310', 
