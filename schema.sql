@@ -1,9 +1,13 @@
 /* 
+	In this schema, a room can assigned to any number of classes, as long as their teachers are the same person.
+	
     What constraints from the domain could not be enforced?
         - The restriction that each class must have at least 1 student couldn't be enforced.
 			This can't enforce by foreign key
     
     What constraints that could have been enforced were not enforced? Why not?
+		- The quiz should finish before the due date and time.
+			Well, we don't have this kind of data in the txt.....
 */
 
 DROP SCHEMA IF EXISTS quizschema CASCADE;
