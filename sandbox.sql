@@ -33,5 +33,5 @@ CREATE TABLE numeric_question_hints(
 	-- Make sure no two hints have same range in one question
     UNIQUE(id, lower_range, upper_range),
 	
-	CHECK(lower_range, upper_range, id)
+	CHECK(is_not_overlap(lower_range, upper_range, id))
 );
