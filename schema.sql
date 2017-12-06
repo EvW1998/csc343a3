@@ -25,11 +25,11 @@ CREATE TYPE question_types AS ENUM(
     Create an function check whether the student is in the class.
 	Return true if it is, false if it isn't
 */
-CREATE OR REPLACE FUNCTION is_in_class(student_id CHAR(10), quiz_id VARCHAR(50))
+CREATE OR REPLACE FUNCTION is_in_class(s_id CHAR(10), quiz_id VARCHAR(50))
 	RETURNS boolean AS
 $func$
 BEGIN
-	RETURN student_id IN (SELECT student_id FROM student_class WHERE class_id = (SELECT id FROM quiz WHERE quiz.class = quiz_id));
+	RETURN s_id IN (SELECT student_id FROM student_class WHERE class_id = (SELECT id FROM quiz WHERE quiz.class = quiz_id));
 END
 $func$ LANGUAGE plpgsql STABLE STRICT;
 
@@ -121,6 +121,8 @@ CREATE TABLE class(
 /*
     Hold the base info of all questions, and add any extra needed info for different questions
         into other tables.
+		
+	* Make sure question_answer has the right type
 */
 CREATE TABLE question(
 	-- ID of this question
@@ -136,6 +138,8 @@ CREATE TABLE question(
 
 /*
     Holds extra information for multiple choice questions
+	
+	* MAKE SURE the question it assigned to is mulitple choice
 */
 CREATE TABLE multiple_choice_options(
 	-- ID of the question that the answer related to
@@ -153,6 +157,8 @@ CREATE TABLE multiple_choice_options(
 /*
     Holds extra information for numeric questions
 	have to make sure no two hint range overlap!
+	
+	* MAKE sure the qustion it assigned to is numeric
 */
 CREATE TABLE numeric_question_hints(
 	-- ID of the question that the answer related to
@@ -223,6 +229,9 @@ CREATE TABLE student_class(
 
     There is also an extra constraint that we added to make sure that the same
         question doesn't appear twice on a quiz.
+		
+		
+	* MAKE SURE mulipti choice question has at least two answer and anwer is in the options
 */
 CREATE TABLE quiz_question(
 	-- The quiz id which the question assigned to
@@ -241,6 +250,8 @@ CREATE TABLE quiz_question(
 
     Make sure that we don't allow many responses for the same question from
         the same student by making the ID combinations unique.
+		
+	* MAKE sure the answer is the right type
 */
 CREATE TABLE quiz_response(
 	-- The id of student who wrote the quiz
