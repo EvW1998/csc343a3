@@ -12,10 +12,12 @@ BEGIN
 	FOR rec IN SELECT * FROM numeric_question_hints WHERE id = q_id
 	LOOP
 		RAISE NOTICE '%', rec.upper_range;
-		IF rec.upper_range = 1 THEN
-			RETURN rec.upper_range;
+		IF rec.lower_range = 1 THEN
+			RETURN rec.lower_range;
 		END IF;
 	END LOOP;
+	
+	RETURN 1998;
 END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
 
