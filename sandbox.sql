@@ -6,14 +6,14 @@ CREATE OR REPLACE FUNCTION is_not_overlap(upper_bound integer, lower_bound integ
 	RETURNS void AS
 $func$
 DECLARE
-	rec RECORD
+	rec RECORD;
 
 BEGIN
 	FOR rec IN SELECT lower_range FROM numeric_question_hints WHERE id = q_id
 	LOOP
 		RAISE NOTICE '%', rec.lower_range;
-	END LOOP
-END
+	END LOOP;
+END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
 
 CREATE TABLE numeric_question_hints(
