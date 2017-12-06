@@ -20,18 +20,20 @@ CREATE VIEW want_responses AS
         AND quiz_response.quiz_id = 'Pr1-220310';
 -- Find all the responses that were not answered
 CREATE VIEW no_answer AS
-    SELECT COUNT(*) AS total FROM want_responses
-        WHERE answer IS NULL;
+    SELECT question_id, count(*) AS no_respons FROM want_responses
+        WHERE answer IS NULL
+		GROUP BY question_id;
 -- Find all the responses that were wrong
 CREATE VIEW wrong_answer AS
-    SELECT COUNT(*) AS total FROM want_responses, right_answers
+    SELECT want_responses.question_id, count(*) AS wrong_respons FROM want_responses, right_answers
         WHERE want_responses.question_id = right_answers.question_id
-        AND want_responses.answer <> right_answers.question_answer;
+        AND want_responses.answer <> right_answers.question_answer
+		GROUP BY want_responses.question_id;
 -- Find all the responses that were right
 CREATE VIEW right_answer AS
-    SELECT COUNT(*) AS total FROM want_responses, right_answers 
+    SELECT want_responses.question_id, count(*) AS right_respons FROM want_responses, right_answers 
         WHERE want_responses.question_id = right_answers.question_id
-        AND want_responses.answer = right_answers.question_answer;
+        AND want_responses.answer = right_answers.question_answer
+		GROUP BY want_responses.question_id;
 
-SELECT no_answer.total AS no_answer, wrong_answer.total AS wrong_answer, right_answer.total AS right_answer
-    FROM no_answer, wrong_answer, right_answer;
+SELECT question_id, right_respons, wrong_respons, no_respons FROM no_answer NATIONAL JOIN wrong_answer NATIONAL JOIN right_answer;
