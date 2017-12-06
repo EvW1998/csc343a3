@@ -29,8 +29,6 @@ CREATE OR REPLACE FUNCTION is_in_class(s_id CHAR(10), quiz_id VARCHAR(50))
 	RETURNS boolean AS
 $func$
 BEGIN
-	RAISE NOTICE '%', (SELECT class FROM quiz WHERE quiz.id = quiz_id);
-	RAISE NOTICE '%', (SELECT student_id FROM student_class WHERE class_id = (SELECT class FROM quiz WHERE quiz.id = quiz_id));
 	RETURN s_id IN (SELECT student_id FROM student_class WHERE class_id = (SELECT class FROM quiz WHERE quiz.id = quiz_id));
 END
 $func$ LANGUAGE plpgsql STABLE STRICT;
@@ -57,6 +55,64 @@ BEGIN
 	RETURN true;
 END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
+
+
+/*
+    Create an function check whether the question_answer is the right type of this question
+	Return true if it is, false if it isn't
+*/
+CREATE OR REPLACE FUNCTION is_right_answer_type(q_answer VARCHAR(1000), q_type question_types)
+	RETURNS boolean AS
+$func$
+BEGIN
+	IF q_type = 'True False' THEN
+		IF NOT (q_answer = 'TRUE' OR q_answer = 'FALSE') THEN
+			RETURN false;
+		END IF;
+	ELSIF q_type = 'Numeric' THEN
+		IF NOT (q_answer SIMILAR TO '[[:digit:]]*') THEN
+			RETURN false;
+		END IF;
+	END IF;
+	
+	RETURN true;
+END
+$func$ LANGUAGE plpgsql STABLE STRICT;
+
+
+/*
+    Create an function check whether the question_id is the right type of this answer
+	Return true if it is, false if it isn't
+*/
+CREATE OR REPLACE FUNCTION is_right_question_type(q_id integer, q_type question_types)
+	RETURNS boolean AS
+$func$
+BEGIN
+	RETURN q_type = (SELECT question_type FROM question WHERE id = q_id);
+END
+$func$ LANGUAGE plpgsql STABLE STRICT;
+
+
+/*
+    Create an function check whether a mulitple choice question has at least two answers
+	Return true if it is, false if it isn't
+*/
+CREATE OR REPLACE FUNCTION has_enough_anwser_for_multiple_choice(q_id integer)
+	RETURNS boolean AS
+$func$
+BEGIN
+	IF (SELECT question_type FROM question WHERE id = q_id) = 'Multiple Choice' THEN
+		RETURN (SELECT count(question_answer) FROM multiple_choice_options WHERE id = q_id) > 1;
+	END IF;
+	RETURN true;
+END
+$func$ LANGUAGE plpgsql STABLE STRICT;
+
+
+
+
+
+
 
 
 /* 
@@ -134,7 +190,9 @@ CREATE TABLE question(
 	-- The right answer of this question
     question_answer VARCHAR(1000) NOT NULL,
 	-- The type of this question
-    question_type question_types NOT NULL
+    question_type question_types NOT NULL,
+	-- Make sure question_answer has the right type
+	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type(question_answer, question_type))
 );
 
 
@@ -152,7 +210,9 @@ CREATE TABLE multiple_choice_options(
     hint VARCHAR(1000),
 	
 	-- Make user there are no same answers for one question
-    UNIQUE(id, question_answer)
+    UNIQUE(id, question_answer),
+	-- MAKE SURE the question it assigned to is mulitple choice
+	CONSTRAINT question_type_wrong CHECK(is_right_question_type(id, 'Multiple Choice'))
 );
 
 
@@ -175,7 +235,9 @@ CREATE TABLE numeric_question_hints(
 	-- Make sure no two hints have same range in one question
     UNIQUE(id, lower_range, upper_range),
 	-- have to make sure no two hint range overlap!
-	CONSTRAINT range_overlap CHECK(is_not_overlap(lower_range, upper_range, id))
+	CONSTRAINT range_overlap CHECK(is_not_overlap(lower_range, upper_range, id)),
+	-- MAKE SURE the question it assigned to is mulitple choice
+	CONSTRAINT question_type_wrong CHECK(is_right_question_type(id, 'Numeric'))
 );
 
 
@@ -243,7 +305,10 @@ CREATE TABLE quiz_question(
 	-- The weight of the question in this quiz
     weight INT NOT NULL,
 	
-    PRIMARY KEY(quiz_id, question_id)
+    PRIMARY KEY(quiz_id, question_id),
+	
+	CONSTRAINT non_positive_weight CHECK(weight > 0),
+	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id))
 );
 
 
