@@ -140,6 +140,22 @@ END
 $func$ LANGUAGE plpgsql STABLE STRICT;
 
 
+/*
+    Create an function check whether a mulitple choice question's answer include in the choices
+	Return true if it is, false if it isn't
+*/
+CREATE OR REPLACE FUNCTION answer_in_choices(q_id integer)
+	RETURNS boolean AS
+$func$
+BEGIN
+	IF (SELECT question_type FROM question WHERE id = q_id) = 'Multiple Choice' THEN
+		RETURN (SELECT question_answer FROM question WHERE id = q_id) IN (SELECT question_answer FROM multiple_choice_options WHERE id = q_id);
+	END IF;
+	RETURN true;
+END
+$func$ LANGUAGE plpgsql STABLE STRICT;
+
+
 
 -- TABLES --
 
@@ -338,7 +354,9 @@ CREATE TABLE quiz_question(
 	-- MAKE sure the weight is greater than 0
 	CONSTRAINT non_positive_weight CHECK(weight > 0),
 	-- Make sure the number of choices of a mulitple choice question is greater than 1
-	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id))
+	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id)),
+	-- MAKE sure the mulitple choice question's answer is in the choices
+	CONSTRAINT answers_not_in_choices CHECK(answer_in_choices(question_id))
 );
 
 
