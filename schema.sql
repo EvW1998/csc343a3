@@ -133,7 +133,7 @@ CREATE OR REPLACE FUNCTION has_enough_anwser_for_multiple_choice(q_id integer)
 $func$
 BEGIN
 	IF (SELECT question_type FROM question WHERE id = q_id) = 'Multiple Choice' THEN
-		RETURN (SELECT count(question_answer) FROM multiple_choice_options WHERE id = q_id) > 1;
+		RETURN (SELECT count(question_answer) FROM extra_multiple_choice_options WHERE id = q_id) > 0;
 	END IF;
 	RETURN true;
 END
@@ -144,12 +144,14 @@ $func$ LANGUAGE plpgsql STABLE STRICT;
     Create an function check whether a mulitple choice question's answer include in the choices
 	Return true if it is, false if it isn't
 */
-CREATE OR REPLACE FUNCTION answer_in_choices(q_id integer)
+CREATE OR REPLACE FUNCTION respons_in_choices(answer VARCHAR(1000), q_id integer)
 	RETURNS boolean AS
 $func$
 BEGIN
 	IF (SELECT question_type FROM question WHERE id = q_id) = 'Multiple Choice' THEN
-		RETURN (SELECT question_answer FROM question WHERE id = q_id) IN (SELECT question_answer FROM multiple_choice_options WHERE id = q_id);
+		RETURN (answer IN (SELECT question_answer FROM extra_multiple_choice_options WHERE id = q_id))
+				OR
+				answer = (SELECT question_answer FROM question WHERE id = q_id);
 	END IF;
 	RETURN true;
 END
@@ -242,10 +244,11 @@ CREATE TABLE question(
 
 /*
     Holds extra information for multiple choice questions
+	NOTICE: THE answer for this question won't store in here
 	
 	* MAKE SURE the question it assigned to is mulitple choice
 */
-CREATE TABLE multiple_choice_options(
+CREATE TABLE extra_multiple_choice_options(
 	-- ID of the question that the answer related to
     id INT REFERENCES question(id) NOT NULL,
 	-- The answer
@@ -339,7 +342,7 @@ CREATE TABLE student_class(
         question doesn't appear twice on a quiz.
 		
 		
-	* MAKE SURE mulipti choice question has at least two answer and anwer is in the options
+	* MAKE SURE mulipti choice question has at least two answers
 */
 CREATE TABLE quiz_question(
 	-- The quiz id which the question assigned to
@@ -354,9 +357,7 @@ CREATE TABLE quiz_question(
 	-- MAKE sure the weight is greater than 0
 	CONSTRAINT non_positive_weight CHECK(weight > 0),
 	-- Make sure the number of choices of a mulitple choice question is greater than 1
-	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id)),
-	-- MAKE sure the mulitple choice question's answer is in the choices
-	CONSTRAINT answers_not_in_choices CHECK(answer_in_choices(question_id))
+	CONSTRAINT not_enough_answers CHECK(has_enough_anwser_for_multiple_choice(question_id))
 );
 
 
@@ -386,4 +387,6 @@ CREATE TABLE quiz_response(
 	CONSTRAINT not_in_class CHECK(is_in_class(student_id, quiz_id)),
 	-- Make sure answer has the right type
 	CONSTRAINT answer_type_wrong CHECK(is_right_answer_type_by_id(answer, question_id))
+		-- MAKE sure the mulitple choice question's respons is in the choices
+	CONSTRAINT respons_not_in_choices CHECK(respons_in_choices(answer, question_id))
 );

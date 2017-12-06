@@ -41,7 +41,7 @@ INSERT INTO multiple_choice_options VALUES(782, 'To pledge your loyalty to Canad
 INSERT INTO question VALUES(
     566, 
     'The Prime Minister, Justin Trudeau, is Canada''s Head of State.',
-    'False',
+    'FALSE',
     'True False'
 );
 
@@ -106,22 +106,22 @@ INSERT INTO quiz_question VALUES('Pr1-220310', 625, 2);
 
 -- STUDENT QUIZ RESPONSES
 INSERT INTO quiz_response VALUES('0998801234', 'Pr1-220310', 601, '1950');
-INSERT INTO quiz_response VALUES('0998801234', 'Pr1-220310', 566, 'False');
+INSERT INTO quiz_response VALUES('0998801234', 'Pr1-220310', 566, 'FALSE');
 INSERT INTO quiz_response VALUES('0998801234', 'Pr1-220310', 790, 'They expanded their defence system, including Fort York');
 INSERT INTO quiz_response VALUES('0998801234', 'Pr1-220310', 625, 'A network used by slaves who escaped the United States into Canada');
 
 INSERT INTO quiz_response VALUES('0010784522', 'Pr1-220310', 601, '1960');
-INSERT INTO quiz_response VALUES('0010784522', 'Pr1-220310', 566, 'False');
+INSERT INTO quiz_response VALUES('0010784522', 'Pr1-220310', 566, 'FALSE');
 INSERT INTO quiz_response VALUES('0010784522', 'Pr1-220310', 790, 'They burned down the White House in Washington D.C.');
 INSERT INTO quiz_response VALUES('0010784522', 'Pr1-220310', 625, 'A network used by slaves who escaped the United States into Canada');
 
 INSERT INTO quiz_response VALUES('0997733991', 'Pr1-220310', 601, '1960');
-INSERT INTO quiz_response VALUES('0997733991', 'Pr1-220310', 566, 'True');
+INSERT INTO quiz_response VALUES('0997733991', 'Pr1-220310', 566, 'TRUE');
 INSERT INTO quiz_response VALUES('0997733991', 'Pr1-220310', 790, 'They burned down the White House in Washington D.C.');
 INSERT INTO quiz_response VALUES('0997733991', 'Pr1-220310', 625, 'The CPR''s secret railway line');
 
 INSERT INTO quiz_response VALUES('5555555555', 'Pr1-220310', 601, NULL);
-INSERT INTO quiz_response VALUES('5555555555', 'Pr1-220310', 566, 'False');
+INSERT INTO quiz_response VALUES('5555555555', 'Pr1-220310', 566, 'FALSE');
 INSERT INTO quiz_response VALUES('5555555555', 'Pr1-220310', 790, 'They captured Niagara Falls');
 INSERT INTO quiz_response VALUES('5555555555', 'Pr1-220310', 625, NULL);
 
