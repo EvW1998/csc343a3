@@ -173,7 +173,7 @@ CREATE TABLE numeric_question_hints(
 	-- Make sure no two hints have same range in one question
     UNIQUE(id, lower_range, upper_range),
 	-- have to make sure no two hint range overlap!
-	CHECK(is_not_overlap(lower_range, upper_range, id))
+	CONSTRAINT range_overlap CHECK(is_not_overlap(lower_range, upper_range, id))
 );
 
 
@@ -263,10 +263,10 @@ CREATE TABLE quiz_response(
 	-- What did the student answer
     answer VARCHAR(1000),
 	
-	-- Make sure the quiz is in the question
-    FOREIGN KEY (quiz_id, question_id) REFERENCES quiz_question(quiz_id, question_id),
+	-- Make sure the question is in the quiz
+    CONSTRAINT foreign_key FOREIGN KEY (quiz_id, question_id) REFERENCES quiz_question(quiz_id, question_id),
 	-- Make sure not record the same thing twice
-    UNIQUE(student_id, quiz_id, question_id),
+    CONSTRAINT uniqu UNIQUE(student_id, quiz_id, question_id),
 	-- Make sure this student is in the class which this quiz assigned to
-	CHECK(is_in_class(student_id, quiz_id))
+	CONSTRAINT not_in_class CHECK(is_in_class(student_id, quiz_id))
 );
