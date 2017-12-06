@@ -11,7 +11,7 @@ DECLARE
 BEGIN
 	FOR rec IN SELECT lower_range FROM numeric_question_hints WHERE id = q_id
 	LOOP
-		RAISE NOTICE '%', rec.lower_range;
+		RAISE NOTICE '%', rec.upper_range;
 	END LOOP;
 END;
 $func$ LANGUAGE plpgsql STABLE STRICT;
