@@ -29,7 +29,7 @@ CREATE OR REPLACE FUNCTION is_in_class(s_id CHAR(10), quiz_id VARCHAR(50))
 	RETURNS boolean AS
 $func$
 BEGIN
-	RAISE (SELECT student_id FROM student_class WHERE class_id = (SELECT class FROM quiz WHERE quiz.id = quiz_id));
+	RAISE NOTICE '%', (SELECT student_id FROM student_class WHERE class_id = (SELECT class FROM quiz WHERE quiz.id = quiz_id));
 	RETURN s_id IN (SELECT student_id FROM student_class WHERE class_id = (SELECT class FROM quiz WHERE quiz.id = quiz_id));
 END
 $func$ LANGUAGE plpgsql STABLE STRICT;
