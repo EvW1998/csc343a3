@@ -13,17 +13,18 @@ INSERT INTO room VALUES(2020, 'room 366', 1010);
 INSERT INTO class VALUES(3030, 2020, 5);
 
 -- Students who are in class: grade 8, room 120, Mr Higgins --
-INSERT INTO student VALUES('0998801234', 'Lena', 'Headey');
-INSERT INTO student_class VALUES('0998801234', 3031);
-INSERT INTO student VALUES('0010784522', 'Peter', 'Dinklage');
-INSERT INTO student_class VALUES('0010784522', 3031);
-INSERT INTO student VALUES('0997733991', 'Emilia', 'Clarke');
-INSERT INTO student_class VALUES('0997733991', 3031);
-INSERT INTO student VALUES('5555555555', 'Kit', 'Harrington');
-INSERT INTO student_class VALUES('5555555555', 3031);
-INSERT INTO student VALUES('1111111111', 'Sophie', 'Turner');
-INSERT INTO student_class VALUES('1111111111', 3031);
+INSERT INTO student VALUES('0998801234', 'Lena', 'Headey'),
+							('0010784522', 'Peter', 'Dinklage'),
+							('0997733991', 'Emilia', 'Clarke'),
+							('5555555555', 'Kit', 'Harrington'),
+							('1111111111', 'Sophie', 'Turner');
 
+INSERT INTO student_class VALUES('0998801234', 3031),
+								('0010784522', 3031),
+								('0997733991', 3031),
+								('5555555555', 3031),
+								('1111111111', 3031);
+								
 -- Students who are in class: grade 5, room 366, Miss Nyers" --
 INSERT INTO student VALUES('2222222222', 'Maisie', 'Williams');
 INSERT INTO student_class VALUES('2222222222', 3030);
